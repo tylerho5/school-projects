@@ -4,7 +4,7 @@
 This project is a movie recommendation system that predicts what users will rate movies they haven't watched yet within the train set and recommends 10 movies based on what the algorithm thinks they will like.
 
 Output includes:
-- top 10 recommendations list with movie ids, 
+- top 10 recommendations list with movie ids
 - top 10 recommendations list with movie names
 - the contributions of similar users, genres, and tag weightings
 - explanations for why the top 3 movies were recommended to add transparency to recommendations
