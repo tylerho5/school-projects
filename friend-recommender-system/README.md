@@ -1,5 +1,9 @@
  # Friend Recommender System
 
-source files in progress
+> README in progress
 
-README in progress
+> source files in progress
+
+> output to be added
+
+> dependencies to be added
