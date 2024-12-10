@@ -21,15 +21,11 @@ import Scaler as sc
 start_time = time.time()
 print(f"Program started at: {time.ctime(start_time)}")
 
-###
-# Place .csv files in same folder as .py files
-###
-
 current_dir = os.path.dirname(os.path.abspath(__file__))
 
-ratings_path = os.path.join(current_dir, 'ratings.csv')
-movies_path = os.path.join(current_dir, 'movies.csv')
-tags_path = os.path.join(current_dir, 'tags.csv')
+ratings_path = os.path.join(current_dir, '/raw-datasets/ratings.csv')
+movies_path = os.path.join(current_dir, '/raw-datasets/movies.csv')
+tags_path = os.path.join(current_dir, '/raw-datasets/tags.csv')
 
 ratings = pd.read_csv(ratings_path)
 movies = pd.read_csv(movies_path)
