@@ -1,7 +1,11 @@
 # Movie Recommender System
 
+```
+ THIS IS A WORK IN PROGRESS
+ ```
+
 ## Description
-This project is a movie recommendation system that predicts what users will rate movies they haven't watched yet within the train set and recommends 10 movies based on what the algorithm thinks they will like.
+This project is a movie recommendation system that predicts what users will rate movies they haven't watched yet within the train set and recommends 10 movies based on what the algorithm thinks they will like. Explains why recommendations are made and is transparent about latent feature weighting. Gives evaluation metrics for recommendation assessment.
 
 Output includes:
 - top 10 recommendations list with movie ids
@@ -18,8 +22,8 @@ Output includes:
 ## Installation
 1. Clone the repository:
     ```bash
-    git clone https://github.com/your-username/movie-recommender-system.git
-    cd movie-recommender-system
+    git clone https://github.com/tylerho5/school-projects/movie-recommender-system.git
+    ```
 
 2. Create a virtual environment and install dependencies:
     python3 -m venv venv
@@ -31,10 +35,11 @@ Output includes:
 2. Run the main script:
     ```bash
     python recSys_final.py
+    ```
 3. Outputs will be saved in the `output/` directory
 
 ## Folder Structure
-```
+```markdown
 ├── output/             # Contains recommendation results
 ├── raw-datasets/       # Contains raw datasets
 ├── scripts/            # Python scripts for recommender system
