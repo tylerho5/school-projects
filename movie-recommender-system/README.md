@@ -75,4 +75,4 @@ This project was a collaborative effort between:
 - [Quynh Nguyen](https://www.linkedin.com/in/quynhnng/): Contributions in research, testing, technical report, and presentation.
 
 ## License
-This project is licensed under the MIT License. See the `LICENSE` file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/tylerho5/school-projects/blob/main/LICENSE) file in the parent repository for details.
