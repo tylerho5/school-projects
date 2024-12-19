@@ -1,0 +1,261 @@
+\documentclass[nonacm, sigconf]{acmart}
+
+% Remove ACM reference format and footer
+\settopmatter{printacmref=false}
+\renewcommand\footnotetextcopyrightpermission[1]{}
+
+% Set page style to empty to remove headers and footers
+\pagestyle{empty}
+
+% Include necessary packages for mathematical symbols and formatting
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+
+\title{Movie Recommendation System: Combining SVD, Tags, and Genre Preferences}
+
+\author{Tyler Ho and Quynh Nguyen}
+\affiliation{
+  \institution{Rutgers University}
+  \city{New Brunswick}
+  \state{NJ}
+  \country{USA}
+}
+\email{{tjh195, nqn5}@scarletmail.rutgers.edu}
+
+\begin{document}
+
+\begin{abstract}
+This project presents a hybrid movie recommendation system that combines collaborative filtering, genre-based preferences, and tag embeddings. Using Singular Value Decomposition (SVD), Word2Vec, and a regression-based blending model, the system provides accurate, explainable, and diverse recommendations. Evaluation metrics such as Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), Precision, Recall, F-measure, and Normalized Discounted Cumulative Gain (NDCG) demonstrate the system’s efficacy. Additionally, the model emphasizes transparency to enhance user trust and adoption.
+\end{abstract}
+
+\keywords{Recommender Systems, Collaborative Filtering, SVD, Word2Vec, Regression, Recommendation Transparency and Explainability}
+
+\maketitle
+
+\section{Introduction}
+Recommendation systems simplify decision-making by providing personalized suggestions. Platforms like Netflix and Spotify rely on these systems to enhance user satisfaction. This project implements a hybrid recommendation system technique on data from the MovieLens dataset, combining collaborative filtering, genre embeddings, and tag-based preferences to improve accuracy and explainability.
+
+\section{Related Work}
+Collaborative filtering methods, particularly SVD, are effective for uncovering latent user-item relationships. However, they struggle with sparsity and cold-start issues. Content-based methods leveraging genres and tags to improve personalization. Hybrid models address these limitations by combining multiple techniques for enhanced recommendations.
+
+\section{Problem Formalization}
+Given:
+\begin{itemize}
+    \item A set of users $U$, movies $M$, and a rating matrix $R$.
+    \item Metadata: genres $G$ and tags $T$.
+\end{itemize}
+
+The goal is to predict the rating $\hat{R}_{u,m}$ for user $u$ and movie $m$, calculated as\cite{mmds}:
+\[
+\hat{R}_{u,m} = \alpha \cdot \text{SVD}(u, m) + \beta \cdot \text{G}(u, m) + \gamma \cdot \text{T}(u, m)
+\]
+where $\alpha, \beta, \gamma$ are learned weights.
+
+\section{The Proposed Model}
+\subsection{Collaborative Filtering with SVD}
+Singular Value Decomposition (SVD)~\cite{scikit_truncated_svd_docs, scikit_truncated_svd_github} decomposes the user-item rating matrix $R$ into three matrices:
+\[
+R \approx U \Sigma V^T
+\]
+where:
+\begin{itemize}
+    \item $U \in \mathbb{R}^{|U| \times k}$ is the user latent feature matrix.
+    \item $\Sigma \in \mathbb{R}^{k \times k}$ is the diagonal matrix of singular values.
+    \item $V \in \mathbb{R}^{|M| \times k}$ is the item latent feature matrix.
+\end{itemize}
+
+In the implementation, the `SVD` class\cite{scikit_truncated_svd_github} performs the decomposition as follows:
+
+\begin{enumerate}
+    \item \textbf{Fit and Transform}:
+    \[
+    U\Sigma = \operatorname{SVD.fit\_transform}(R)
+    \]
+    
+    The \texttt{`fit\_transform`} function computes the decomposition and returns the product $U\Sigma$, representing the scaled user features.
+
+    \item \textbf{Extracting Item Features}:
+    \[
+    V = \operatorname{SVD.components}^T
+    \]
+    
+    The \texttt{`components`} attribute holds the matrix $V$, which is transposed to align with the standard SVD formulation.
+\end{enumerate}
+
+Ratings are predicted using the latent features as:
+\[
+\hat{R}_{u,m} = \mathbf{u}_u \cdot \mathbf{v}_m^T
+\]
+where:
+\begin{itemize}
+    \item $\mathbf{u}_u$ is the $u$-th row of $U\Sigma$, representing the latent features of user $u$.
+    \item $\mathbf{v}_m$ is the $m$-th row of $V$, representing the latent features of movie $m$.
+\end{itemize}
+
+This prediction leverages the dot product of user and item latent features to estimate the rating $\hat{R}_{u,m}$.
+
+\subsection{Genre Integration}
+Genres are represented as embeddings derived from movie metadata. A user-genre matrix captures user preferences, refined through historical ratings. Recommendations are adjusted to reflect these preferences.
+
+\subsection{Tag Integration}
+Tags associated with movies are weighted by user ratings to construct a user-tag matrix. The system adjusts recommendations based on a user's affinity for specific tags.
+
+\subsection{Word2Vec Embeddings}
+\label{sec:word2vec}
+
+Word2Vec~\cite{mikolov2013distributed} is utilized to generate vector representations of movie tags, capturing semantic relationships that enhance the recommendation system's understanding of user preferences. This project implements the Skip-Gram\cite{gensim_word2vec_github, word2vec_gfg, tensorflow_word2vec_github} model with Negative Sampling\cite{mccormickml_word2vec}.
+
+\subsubsection{Model Architecture}
+The Skip-Gram model aims to predict surrounding context words given a target word. For training words $w_1, w_2, w_3, ... w_t$, probability is \cite{mikolov2013distributed, tensorflow_word2vec_docs}:
+\begin{equation}
+\frac1T\sum_{t=1}^T\sum_{-c\leq j\leq c, j\neq 0} \log p(w_{t+j}|w_t)
+\end{equation}
+The goal is to maximize $P(w_{t+j}|w_j)$,  where $v_w$ and $v'_w$ are input and output vector representations of w, with W as the number of words in vocabulary\cite{mikolov2013distributed, tensorflow_word2vec_docs}: 
+\begin{equation}
+p(w_O|w_I) = \frac{\exp\left({v'_{w_O}}^\top v_{w_I}\right)}
+{\sum_{w=1}^{W}\exp\left({v'_w}^\top v_{w_I}\right)}
+\end{equation}
+\subsubsection{Negative Sampling}
+To make training computationally feasible, Negative Sampling is employed. Instead of updating all weights, the model updates weights for a small number of negative samples\cite{mikolov2013distributed, tensorflow_word2vec_docs}. The loss function for a target-context pair $(w_I, w_O)$ with $k$ negative samples is:
+ \begin{equation}
+   \log \sigma({v'_{w_O}}^\top v_{w_I}) + \sum_{i=1}^k\mathbb E_{w_i\sim
+    P_n(w)}\left[\log \sigma(-{v'_{w_i}}^\top v_{w_I})\right]
+ \end{equation}
+where $\sigma$ is the sigmoid function, and $w_k$ are the negative samples.
+
+\subsubsection{Training Procedure}
+The training involves the following steps:
+
+\begin{enumerate}
+    \item \textbf{Vocabulary Construction}: Build a vocabulary of tags appearing at least `minCount` times.
+    \item \textbf{Generating Training Pairs}: Create (target, context) pairs based on the window size.
+    \item \textbf{Negative Sampling}: For each positive pair, sample $K$ negative examples not present in the context.
+    \item \textbf{Updating Embeddings}: Adjust the input and output vectors using gradient descent to minimize the loss function.
+\end{enumerate}
+
+\subsubsection{Implementation Details}
+The `Word2Vec` class includes parameters such as:
+\begin{itemize}
+    \item \textbf{vecSize}: Dimension of the embeddings.
+    \item \textbf{window}: Context window size.
+    \item \textbf{minCount}: Minimum frequency for tags to be included.
+    \item \textbf{epochs}: Number of training iterations.
+    \item \textbf{negSamples}: Number of negative samples per positive pair.
+    \item \textbf{learnRate}: Learning rate for optimization.
+\end{itemize}
+
+Embeddings are initialized randomly and updated during training to capture the semantic relationships between tags and genres.
+
+\subsubsection{Integration into the Recommendation System}
+The learned tag embeddings are averaged per user based on their tag and genre preferences, forming the user embedding matrix. These embeddings are combined with SVD-derived features and fed into the regression model to predict ratings, thereby enhancing the system's ability to recommend movies that align with user interests.
+
+
+\subsection{Scaling}
+Based on the scikit StandardScaling package, feature scaling~\cite{scikit_standard_scaler_docs, scikit_standard_scaler_github} is applied to normalize the user and item embeddings, ensuring that all features contribute equally to the regression model. The standardization process is defined as:
+\begin{equation}
+x_{\text{scaled}} = \frac{x - \mu}{\sigma}
+\end{equation}
+where:
+\begin{itemize}
+    \item $x$ is the original feature value.
+    \item $\mu$ is the mean of the feature.
+    \item $\sigma$ is the standard deviation of the feature.
+\end{itemize}
+This scaling technique transforms the data to have zero mean and unit variance, which is essential for improving the convergence and performance of the regression model.
+
+\subsection{Regression-Based Blending}
+A \textbf{Regularized Linear Regression} model~\cite{scikit_ridge_docs, scikit_ridge_github} is utilized to combine the predictions from SVD, genre-based, and tag-based components. The combined prediction is formulated as:
+\begin{equation}
+\hat{R}_{u,m} = \alpha \cdot \text{SVD}(u, m) + \beta \cdot \text{Tag}(u, m) + \gamma \cdot \text{Genre}(u, m)
+\end{equation}
+where $\alpha, \beta, \gamma$ are coefficients learned by the regression model.
+
+The regression model minimizes the following regularized loss function to determine the optimal coefficients:
+\begin{equation}
+L = \sum_{(u,m) \in R} (\hat{R}_{u,m} - R_{u,m})^2 + \lambda \left( \alpha^2 + \beta^2 + \gamma^2 \right)
+\end{equation}
+where:
+\begin{itemize}
+    \item $R_{u,m}$ is the actual rating by user $u$ for movie $m$.
+    \item $\hat{R}_{u,m}$ is the predicted rating.
+    \item $\lambda$ is the regularization parameter (corresponding to `alpha=1` in the class initialization).
+\end{itemize}
+
+\textbf{Implementation Details:}
+\begin{itemize}
+    \item Based on the scikit Ridge Regression Model, the regression model is initialized with a regularization parameter $\lambda = 1$, controlling the strength of the regularization to prevent overfitting.
+    \item The model is trained using \textbf{Ordinary Least Squares (OLS)} augmented with L2 regularization to find the coefficients $\alpha, \beta, \gamma$ that minimize the loss function.
+    \item After training, the learned coefficients are used to weigh the contributions of each component (SVD, Tag, Genre) in the final rating prediction.
+\end{itemize}
+
+This regression-based blending ensures that the model not only fits the training data well but also generalizes effectively to unseen data by incorporating regularization.
+
+\section{Experiments}
+\subsection{Experimental Setup}
+\begin{itemize}
+    \item \textbf{Dataset}: MovieLens--containing ratings, genres, and tags.
+    \item \textbf{Metrics}: MAE, RMSE, Precision, Recall, F-measure, NDCG~\cite{scikit_ndcg_github}.
+\end{itemize}
+
+\subsection{Results}
+
+\textbf{Baseline Rating Prediction}:
+\begin{itemize}
+    \item MAE: \~0.8188
+    \item RMSE: \~1.0365
+\end{itemize}
+
+\textbf{Improved Rating Prediction:}
+\begin{itemize}
+    \item MAE: \~0.6735
+    \item RMSE: \~0.8749
+\end{itemize}
+
+Baseline prediction is found by taking the average rating among users for each movie and applying this number to every rating prediction for every user.
+
+\textbf{Meaning of these results}:
+On average, the recommender system's predictions are 0.67 points off from the actual ratings, an indicator that the recommender system's performance is significant compared to a baseline rating prediction where the average among all ratings is taken.
+
+\textbf{Top-10 Recommendation Relevance:}
+\begin{itemize}
+    \item Precision: \~0.0668
+    \item Recall: ~\~0.0177
+    \item F-measure: \~0.0245
+    \item NDCG: \~0.0606
+\end{itemize}
+
+\textbf{Meaning of these results}:
+Based on these scores, a few conclusions about the recommender system can be made. Of the top 10 movie recommendations given to each user, most are not relevant to the user. Additionally, by recommending just 10 movies, it misses a lot of possible relevant movies that the user would enjoy. 
+
+The extremely low precision and NDCG scores can be explained by how recommendations are made. Due to the fact that in there are so over 9,000 movies in the dataset, the chances that the recommended movies land within the testing set is low. Due to these subsetting constraints, precision and NDCG, which represent ratios of relevant movies for each user, will consequently be very low.
+
+This is not out of the ordinary for recommender systems. Precision and NDCG may not be high unless recommendations are being made from a very small train and test set.
+
+\section{Transparency and Explainability}
+In the recommender system, movie recommendations are explained using:
+
+\begin{itemize}
+    \item User alignment with genres or tags by showing how the recommendation system weighted the user's preferences
+    \item Contributions from similar users' ratings.
+\end{itemize}
+
+This transparency helps users understand the rationale behind movie recommendations. This has several benefits for the system. Explainability increases use trust and confidence in the system. When users understand why a recommendation is given, they are more likely to trust the system and keep using the service. Knowing why a product is recommended can provide users with expanded context to help determine if a movie aligns with their preferences. Additionally, transparency in recommendations can allow users to understand the intent behind certain recommendations and give feedback on improving the system.
+
+\section{Conclusions and Future Work}
+This project successfully integrates SVD, tags, and genres into a hybrid recommendation system. The system provides accurate and explainable predictions, validated by high performance in MAE and RMSE metrics. Future work includes:
+\begin{itemize}
+    \item Addressing cold-start problems for new users and items.
+    \item Scaling the system with deep learning methods.
+    \item Adding temporal dynamics for evolving user preferences.
+    \item Filtering movies within specific genres
+    \item Incorporate other metadata from data, such as time of ratings and tags
+
+\end{itemize}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references}
+
+
+\end{document}
