@@ -1,15 +1,15 @@
-### Tyler Ho, Quynh Nguyen
-### CS439
-### Final Project
-### Fall 2024
+### Clean-room implementation based on scikit-learn's RidgeRegression class
+### Reference: https://github.com/scikit-learn/scikit-learn/blob/6e9039160/sklearn/linear_model/_ridge.py#L1016
+### License: BSD 3-Clause License
+### Authors: Tyler Ho, Quynh Nguyen
+### CS439 - Final Project
+### Nov 2024
 
 import numpy as np
 
 class RegressionModel:
     """
     fits regression model and applies to matrix for predictions
-
-    based on Ridge Regression from scikit
     """
 
     def __init__(self, alpha):
