@@ -1,15 +1,15 @@
-### Tyler Ho, Quynh Nguyen
-### CS439
-### Final Project
-### Fall 2024
+### Clean-room implementation based on scikit-learn's StandardScaler class
+### Reference: https://github.com/scikit-learn/scikit-learn/blob/fa5d7275b/sklearn/preprocessing/_data.py#L710
+### License: BSD 3-Clause License
+### Authors: Tyler Ho, Quynh Nguyen
+### CS439 - Final Project
+### Nov 2024
 
 import numpy as np
 
 class Scaler:
     """
     normalizes matrix fed into it, scaling to unit variance
-
-    based on StandardScaler from scikit
     """
 
     def __init__(self):
