@@ -22,4 +22,5 @@ SOFTWARE.
 
 ---
 
-**Note:** The `movie-recommender-system` subfolder and its contents are licensed under the [BSD 3-Clause License](./movie-recommender-system/LICENSE). Please refer to that directory for details.
+This repository is licensed under the MIT License, except for the `movie-recommender-system/` directory, which is licensed under the BSD 3-Clause License. 
+See `movie-recommender-system/LICENSE` for details.
