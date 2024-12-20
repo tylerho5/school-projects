@@ -1,15 +1,15 @@
-### Tyler Ho, Quynh Nguyen
-### CS439
-### Final Project
-### Fall 2024
+### Clean-room implementation based on scikit-learn's TruncatedSVD class
+### Reference: https://github.com/scikit-learn/scikit-learn/blob/fa5d7275b/sklearn/decomposition/_truncated_svd.py#L28
+### License: BSD 3-Clause License
+### Authors: Tyler Ho, Quynh Nguyen
+### CS439 - Final Project
+### Nov 2024
 
 import numpy as np
 
 class SVD:
     """
     reduces dimensionality of matrix
-
-    based on on TruncatedSVD from scikit
     """
     def __init__(self):
 
