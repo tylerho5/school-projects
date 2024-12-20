@@ -52,21 +52,20 @@ Output includes:
 
 ## Acknowledgments
 
-This project was built with inspiration and code references from the following open-source repositories. We have much appreciation for the contributions of the developers and maintainers of these projects.
+This project was built with inspiration and code references from the following open-source repositories:
 
-- **[scikit-learn](https://github.com/scikit-learn/scikit-learn)**:
-  - [Truncated Singular Value Decomposition (SVD)](https://github.com/scikit-learn/scikit-learn/blob/fa5d7275b/sklearn/decomposition/_truncated_svd.py#L28) - Used as a reference for [our simplified implementation of SVD](https://github.com/tylerho5/school-projects/blob/main/movie-recommender-system/scripts/SVD.py).
-  - [Ridge Regression](https://github.com/scikit-learn/scikit-learn/blob/6e9039160/sklearn/linear_model/_ridge.py#L1016) - Referred for insights on [implementing regression models](https://github.com/tylerho5/school-projects/blob/main/movie-recommender-system/scripts/RegressionModel.py).
-  - [Preprocessing Scaler](https://github.com/scikit-learn/scikit-learn/blob/fa5d7275b/sklearn/preprocessing/_data.py#L710) - Used as a reference for [data preprocessing methodology](https://github.com/tylerho5/school-projects/blob/main/movie-recommender-system/scripts/Scaler.py).
-  - [Ranking Metrics](https://github.com/scikit-learn/scikit-learn/blob/46a7c9a5e4fe88dfdfd371bf36477f03498a3390/sklearn/metrics/_ranking.py#L1750) - Consulted for the implementation of ranking metrics, such as AUC and precision-recall.
+- **scikit-learn** (BSD 3-Clause License)
+  - [Truncated Singular Value Decomposition (SVD)](https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/decomposition/_truncated_svd.py) - Referenced for implementing [`SVD.py`](movie-recommender-system/scripts/SVD.py).
+  - [Ridge Regression](https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/linear_model/_ridge.py) - Used as a reference for [`RegressionModel.py`](movie-recommender-system/scripts/RegressionModel.py).
+  - [Preprocessing Scaler](https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/preprocessing/_data.py) - Consulted for [`Scaler.py`](movie-recommender-system/scripts/Scaler.py).
 
-- **[Gensim](https://github.com/piskvorky/gensim)**:
-  - [Word2Vec Model](https://github.com/piskvorky/gensim/blob/develop/gensim/models/word2vec.py) - Used as a reference for understanding and [implementing custom Word2Vec embeddings model](https://github.com/tylerho5/school-projects/blob/main/movie-recommender-system/scripts/Word2Vec.py).
+- **TensorFlow** (Apache 2.0 License)
+  - [Word2Vec Tutorial](https://github.com/tensorflow/text/blob/master/docs/tutorials/word2vec.ipynb) - Used for implementing [`Word2Vec.py`](movie-recommender-system/scripts/Word2Vec.py).
 
-- **[TensorFlow Text](https://github.com/tensorflow/text)**:
-  - [Word2Vec Tutorial](https://github.com/tensorflow/text/blob/master/docs/tutorials/word2vec.ipynb) - Consulted for a practical tutorial on [Word2Vec model implementation](https://github.com/tylerho5/school-projects/blob/main/movie-recommender-system/scripts/Word2Vec.py) and usage.
+- **Gensim** (LGPL License)
+  - [Word2Vec Implementation](https://github.com/RaRe-Technologies/gensim/blob/develop/gensim/models/word2vec.py) - Referenced for enhancing the Word2Vec model.
 
-We are grateful to the open-source community for providing these high-quality resources, which have significantly contributed to the inspiration and development of this project.
+We are grateful to the open-source community for these resources, which have significantly contributed to the inspiration and development of the project.
 
 ## Contributors
 
@@ -75,4 +74,6 @@ This project was a collaborative effort between:
 - [Quynh Nguyen](https://www.linkedin.com/in/quynhnng/): Contributions in research, testing, technical report, and presentation.
 
 ## License
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/tylerho5/school-projects/blob/main/LICENSE) file in the parent repository for details.
+
+This project is licensed under the BSD 3-Clause License. See the [LICENSE](movie-recommender-system/LICENSE) file in this repository for details.
+
