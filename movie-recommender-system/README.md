@@ -55,12 +55,12 @@ Output includes:
 This project was built with inspiration and code references from the following open-source repositories:
 
 - **scikit-learn** (BSD 3-Clause License)
-  - [Truncated Singular Value Decomposition (SVD)](https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/decomposition/_truncated_svd.py) - Referenced for implementing [`SVD.py`](movie-recommender-system/scripts/SVD.py).
-  - [Ridge Regression](https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/linear_model/_ridge.py) - Used as a reference for [`RegressionModel.py`](movie-recommender-system/scripts/RegressionModel.py).
-  - [Preprocessing Scaler](https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/preprocessing/_data.py) - Consulted for [`Scaler.py`](movie-recommender-system/scripts/Scaler.py).
+  - [Truncated Singular Value Decomposition (SVD)](https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/decomposition/_truncated_svd.py) - Referenced for implementing [`SVD.py`](./scripts/SVD.py).
+  - [Ridge Regression](https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/linear_model/_ridge.py) - Used as a reference for [`RegressionModel.py`](./scripts/RegressionModel.py).
+  - [Preprocessing Scaler](https://github.com/scikit-learn/scikit-learn/blob/main/sklearn/preprocessing/_data.py) - Consulted for [`Scaler.py`](./scripts/Scaler.py).
 
 - **TensorFlow** (Apache 2.0 License)
-  - [Word2Vec Tutorial](https://github.com/tensorflow/text/blob/master/docs/tutorials/word2vec.ipynb) - Used for implementing [`Word2Vec.py`](movie-recommender-system/scripts/Word2Vec.py).
+  - [Word2Vec Tutorial](https://github.com/tensorflow/text/blob/master/docs/tutorials/word2vec.ipynb) - Used for implementing [`Word2Vec.py`](./scripts/Word2Vec.py).
 
 - **Gensim** (LGPL License)
   - [Word2Vec Implementation](https://github.com/RaRe-Technologies/gensim/blob/develop/gensim/models/word2vec.py) - Referenced for enhancing the Word2Vec model.
@@ -75,5 +75,5 @@ This project was a collaborative effort between:
 
 ## License
 
-This project is licensed under the BSD 3-Clause License. See the [LICENSE](movie-recommender-system/LICENSE) file in this repository for details.
+This project is licensed under the BSD 3-Clause License. See the [LICENSE](./LICENSE) file in this repository for details.
 
