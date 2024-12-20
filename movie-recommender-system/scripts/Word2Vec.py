@@ -1,7 +1,10 @@
-### Tyler Ho, Quynh Nguyen
-### CS439
-### Final Project
-### Fall 2024
+### Clean-room implementation based on Gensim and TensorFlow's Word2Vec classes
+### Reference: https://github.com/piskvorky/gensim/blob/develop/gensim/models/word2vec.py
+### & https://github.com/tensorflow/text/blob/master/docs/tutorials/word2vec.ipynb
+### License: BSD 3-Clause License
+### Authors: Tyler Ho, Quynh Nguyen
+### CS439 - Final Project
+### Nov 2024
 
 import numpy as np
 import random
@@ -10,8 +13,6 @@ from collections import defaultdict
 class Word2Vec:
     """
     learns word embeddings from corpus of sentences
-
-    based on Word2Vec using Skip-Gram with Negative Sampling from gensim and tensorflow
     """
 
     def __init__(self):
